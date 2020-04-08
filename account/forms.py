@@ -1,44 +1,61 @@
-from django import forms
-from .models import User
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.forms import ModelForm, DateInput
+
+from .models import User, UserDetails
 
 
-class RegistrationForms(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
-    )
-    email = forms.EmailField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
-    )
-    first_name = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'})
-    )
-    last_name = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
-        help_text='Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.'
-    )
-    confirm_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'})
-    )
+def set_fields_css_class(fields, use_label=False):
+    for key in fields:
+        placeholder = ' '.join(list(map(lambda x: x[0].upper() + x[1:], key.split('_'))))
+        if use_label:
+            fields[key].label = placeholder
+        fields[key].widget.attrs.update({'class': 'form-control', 'placeholder': placeholder})
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        set_fields_css_class(self.fields)
+
+
+class RegistrationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        set_fields_css_class(self.fields)
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
+        self.fields['password2'].widget.attrs.update({'placeholder': 'Password Confirmation'})
+
+    class Meta():
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+
+
+class UserDetailsForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserDetailsForm, self).__init__(*args, **kwargs)
+        set_fields_css_class(self.fields, use_label=True)
+        self.fields['date_of_birth'].label = 'Date of Birth'
+        self.fields['ktp'].label = 'Identification ID (KTP/SIM/Student Card)'
+        self.fields['experiences'].label = 'Your Teaching Experiences'
+        self.fields['experiences_proofs'].label = 'Teaching Experiences Proofs'
 
     def clean(self):
-        cleaned_data =  super().clean()
-        password = cleaned_data['password']
-        confirm_password = cleaned_data['confirm_password']
+        return super().clean()
 
-        if password != confirm_password:
-            err_message = 'Password and confirmation password is not equal!'
-            self.add_error('password', err_message)
-            self.add_error('confirm_password', err_message)
-
-    # class Meta():
-    #     model = User
-    #     fields = ('username', 'email', 'first_name', 'last_name', 'password')
-
-    def save(self, data):
-        User.objects.create_user(username=data['username'], email=data['email'], first_name=data['first_name'],
-                                 last_name=data['last_name'], password=data['password'])
+    class Meta():
+        model = UserDetails
+        fields = '__all__'
+        exclude = ['user']
+        # labels = {
+        #     'date_of_birth': 'Date of Birth',
+        #     'ktp': 'Identification ID (KTP/SIM/Student Card)',
+        #     'experiences': 'Your Teaching Experiences',
+        #     'experiences_proofs': 'Teaching Experiences Proofs',
+        # }
+        help_texts = {
+            'ktp': 'Only accepts images',
+            'experiences_proofs': 'Only accepts images',
+        }
+        widgets = {
+            'date_of_birth': DateInput(attrs={'type': 'date'}),
+        }

@@ -26,7 +26,7 @@ SECRET_KEY = 'zd!#x!&h+z8%y%h%)crs9mq@xzd1-*%8v5c15fxmk(x+vm0unp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '192.168.1.24']
 
 
 # Application definition
@@ -137,3 +137,8 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
+
+
+# Media files (user-uploaded files)
+# MEDIA_URL = BASE_DIR
+MEDIA_ROOT = 'media'

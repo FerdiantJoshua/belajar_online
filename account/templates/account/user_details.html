@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Personal Information Details {% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Personal Information Details</h1>
+  <form enctype="multipart/form-data" method="post" action="{% url 'account:user_details' %}">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label>{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+      <div class="invalid-feedback">{{ field.errors }}</div>
+      {% endif %}
+      {% if field.help_text %}
+      <small class="form-text text-muted">{{field.help_text}}</small>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+  </form>
+</div>
+{% endblock %}
