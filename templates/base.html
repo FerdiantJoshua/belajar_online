@@ -20,17 +20,24 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="mr-auto navbar-nav">
+          {% if user.is_superuser %}
           <li><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+          {% endif %}
           {% if user.is_authenticated %}
-            <li><a class="nav-link" href="{% url 'account:logout' %}">Logout</a></li>
+          <li><a class="nav-link" href="{% url 'account:user_details' %}">Profile</a></li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav">
+          {% if user.is_authenticated %}
+          <li><a class="nav-link" href="{% url 'account:logout' %}">Logout</a></li>
           {% else %}
-            <li><a class="nav-link" href="{% url 'account:register' %}">Register</a></li>
-            <li><a class="nav-link" href="{% url 'account:login' %}">Login</a></li>
+          <li><a class="nav-link" href="{% url 'account:register' %}">Register</a></li>
+          <li><a class="nav-link" href="{% url 'account:login' %}">Login</a></li>
           {% endif %}
         </ul>
       </div>
     </nav>
-    <main class="container pt-5">
+    <main class="container mt-5 pt-3">
     {% block content %}
     {% endblock %}
     </main>
