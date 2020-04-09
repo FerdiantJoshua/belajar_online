@@ -25,22 +25,27 @@ class RegistrationForm(UserCreationForm):
         self.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Password Confirmation'})
 
+    def save(self, commit=True):
+        user = super().save(commit)
+        if not UserDetails.objects.filter(pk=user.pk):
+            UserDetails(user=user).save()
+        return user
+
     class Meta():
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
 
 
 class UserDetailsForm(ModelForm):
+    is_user_teacher = False
+
     def __init__(self, *args, **kwargs):
         super(UserDetailsForm, self).__init__(*args, **kwargs)
         set_fields_css_class(self.fields, use_label=True)
         self.fields['date_of_birth'].label = 'Date of Birth'
         self.fields['ktp'].label = 'Identification ID (KTP/SIM/Student Card)'
-        self.fields['experiences'].label = 'Your Teaching Experiences'
+        self.fields['experiences'].label = 'Teaching Experiences'
         self.fields['experiences_proofs'].label = 'Teaching Experiences Proofs'
-
-    def clean(self):
-        return super().clean()
 
     class Meta():
         model = UserDetails

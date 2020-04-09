@@ -55,7 +55,6 @@ class RegisterView(generic.FormView):
 
     def form_valid(self, form):
         user = form.save()
-        UserDetails(user=user).save()
         login(self.request, user)
         return super().form_valid(form)
 
@@ -84,20 +83,16 @@ class UserDetailsView(LoginRequiredMixin, generic.FormView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        form.is_user_teacher = self.request.user.is_teacher
         if not self.request.user.is_teacher:
             form.fields.pop('occupation')
             form.fields.pop('experiences')
             form.fields.pop('experiences_proofs')
-        else:
-            form.fields['occupation'].widget.attrs.update({'required':''})
-            form.fields['experiences'].widget.attrs.update({'required':''})
-            form.fields['experiences_proofs'].widget.attrs.update({'required':''})
         return form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        context['user'] = user
+        context['need_edit'] = bool(context['form'].errors) or not context['form'].instance.ktp
         return context
 
     def form_valid(self, form):
