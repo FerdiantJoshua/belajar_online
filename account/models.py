@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -31,3 +31,33 @@ class UserDetails(models.Model):
 
     def __str__(self):
         return 'Userdetails with user ' + str(self.user)
+
+
+class UserAppraisal(models.Model):
+    RATING_CHOICE = [
+        ('1', 'One'),
+        ('2', 'Two'),
+        ('3', 'Three'),
+        ('4', 'Four'),
+        ('5', 'Five'),
+    ]
+    target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appraisal_target_user')
+    source_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appraisal_source_user')
+    rating = models.SmallIntegerField (
+        'Rating',
+        choices= RATING_CHOICE,
+        default=0,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(0)
+        ],
+    )
+    feedback = models.TextField('Feedback', blank=True)
+
+    class Meta:
+        unique_together = (('target_user', 'source_user'), )
+
+    def __str__(self):
+        return f'Appraisal from user {self.source_user} -> user {self.target_user}: {self.rating}'
+
+# up.id = UserAppraisal.objects.filter(target_user=u1, source_user=u2)[0].id
