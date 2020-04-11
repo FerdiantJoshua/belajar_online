@@ -7,19 +7,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.detail import SingleObjectMixin
 
+from belajar_online.utils import add_invalid_css_class_to_form
 from .forms import RegistrationForm, LoginForm, UserDetailsForm
 from .models import User, UserDetails
-
-
-def add_invalid_css_class_to_form(func):
-    def wrapper(*args, **kwargs):
-        form = args[1]
-        objects = form.fields if form.non_field_errors() else form.errors
-        for key in objects:
-            field = form.fields.get(key)
-            field.widget.attrs.update({'class': field.widget.attrs['class'] + ' is-invalid'})
-        return func(*args, **kwargs)
-    return wrapper
 
 
 class EnhancedLoginView(LoginView):
@@ -83,7 +73,6 @@ class UserDetailsView(LoginRequiredMixin, generic.FormView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.is_user_teacher = self.request.user.is_teacher
         if not self.request.user.is_teacher:
             form.fields.pop('occupation')
             form.fields.pop('experiences')
@@ -93,6 +82,7 @@ class UserDetailsView(LoginRequiredMixin, generic.FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['need_edit'] = bool(context['form'].errors) or not context['form'].instance.ktp
+        context['appraisals'] = self.request.user.appraisal_target_user.order_by('-date').all()
         return context
 
     def form_valid(self, form):

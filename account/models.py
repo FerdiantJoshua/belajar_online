@@ -18,16 +18,17 @@ class UserDetails(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     gender = models.CharField(
+        'Gender',
         max_length=1,
         choices=GENDER_CHOICES
     )
-    date_of_birth = models.DateField(null=True)
-    address = models.CharField(max_length=96)
-    phone_number = models.CharField(validators=[phone_validator], max_length=13)
-    ktp = models.ImageField(upload_to='account/ktp/%Y%m%d')
-    occupation = models.CharField(max_length=32)
-    experiences = models.CharField(max_length=32)
-    experiences_proofs = models.ImageField(upload_to='account/proof/%Y%m%d')
+    date_of_birth = models.DateField('Date of Birth', null=True)
+    address = models.CharField('Address', max_length=96)
+    phone_number = models.CharField('Phone Number', validators=[phone_validator], max_length=13)
+    ktp = models.ImageField('Identification ID (KTP/SIM/Student Card)', upload_to='account/ktp/%Y%m%d')
+    occupation = models.CharField('Occupation', max_length=32)
+    experiences = models.CharField('Experiences', max_length=32)
+    experiences_proofs = models.ImageField('Experiences Proofs', upload_to='account/proof/%Y%m%d')
 
     def __str__(self):
         return 'Userdetails with user ' + str(self.user)
@@ -35,11 +36,11 @@ class UserDetails(models.Model):
 
 class UserAppraisal(models.Model):
     RATING_CHOICE = [
-        ('1', 'One'),
-        ('2', 'Two'),
-        ('3', 'Three'),
-        ('4', 'Four'),
-        ('5', 'Five'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
     ]
     target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appraisal_target_user')
     source_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appraisal_source_user')
@@ -53,6 +54,7 @@ class UserAppraisal(models.Model):
         ],
     )
     feedback = models.TextField('Feedback', blank=True)
+    date = models.DateField('Date', null=True)
 
     class Meta:
         unique_together = (('target_user', 'source_user'), )

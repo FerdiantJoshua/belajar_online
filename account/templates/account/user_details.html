@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} Personal Information Details {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/user_details.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="row my-2">
@@ -32,6 +36,12 @@
               <p>
                   Indie music, skiing and hiking. I love the great outdoors.
               </p>
+              <h6>Feedbacks</h6>
+              {% for appraisal in appraisals %}
+                <p>{{ appraisal.source_user.username }}: {{ appraisal.rating }} - {{ appraisal.feedback }} at {{ appraisal.date }}</p>
+              {% empty %}
+              <p>No feedback yet.</p>
+              {% endfor %}
             </div>
             <div class="col-md-6">
               <h6>Recent badges</h6>
@@ -180,7 +190,11 @@
       </div>
     </div>
     <div class="col-lg-4 order-lg-1 text-center">
-      <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+      {% if user.userdetails.photo %}
+      <img src="{% get_media_prefix %}{{user.userdetails.ktp }}" class="mx-auto img-fluid img-circle d-block profile-picture">
+      {% else %}
+      <img src="{% static 'images/blank_profile.png' %}" class="mx-auto img-fluid img-circle d-block profile-picture">
+      {% endif %}
       <h6 class="mt-2">Upload a different photo</h6>
       <label class="custom-file">
         <input type="file" id="file" class="custom-file-input">
