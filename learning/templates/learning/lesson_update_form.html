@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Lesson {% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Edit Lesson</h1>
+  <form enctype="multipart/form-data" method="post" action="{% url 'learning:edit_lesson' lesson.id %}">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label class="form-control-label">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+      <div class="invalid-feedback">{{ field.errors }}</div>
+      {% endif %}
+      {% if field.help_text %}
+      <small class="form-text text-muted">{{field.help_text}}</small>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary" value="Save">Save</button>
+  </form>
+  <a class="btn btn-secondary" href="{% url 'learning:detail_lesson' lesson.id %}">Back</a>
+</div>
+{% endblock %}

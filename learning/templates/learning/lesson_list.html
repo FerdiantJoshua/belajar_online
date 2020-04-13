@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} Lessons {% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1>Lessons</h1>
+  </div>
+  <div class="row">
+    <ul>
+      {% for lesson in lessons %}
+        <li><a href="{{ lesson.get_absolute_url }}">{{ lesson }}</a></li>
+      {% empty %}
+        <li>No recorded lesson.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="row">
+    {% if user.is_teacher %}
+    <a class="btn btn-primary" href="{% url 'learning:create_lesson' %}">
+      Add new lesson
+    </a>
+    {% endif %}
+    <a class="btn btn-secondary" href="{% url 'learning:list_lessons' %}">
+      Back
+    </a>
+  </div>
+</div>
+{% endblock %}

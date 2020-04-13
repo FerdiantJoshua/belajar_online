@@ -38,7 +38,7 @@
           {% endif %}
           {% if user.is_authenticated %}
           <li><a class="nav-link" href="{% url 'user_profile:profile' user.username %}">Profile</a></li>
-          <li><a class="nav-link" href="{% url 'learning:schedule' %}">Schedule</a></li>
+          <li><a class="nav-link" href="{% url 'learning:list_lessons' %}">Lesson</a></li>
           <li><a class="nav-link" href="{% url 'learning:list_teachers' %}">Teacher</a></li>
           {% endif %}
         </ul>

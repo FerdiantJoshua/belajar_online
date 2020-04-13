@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
-from django.urls import reverse_lazy
 
 
 def validate_file_extension(value):
@@ -11,7 +10,8 @@ def validate_file_extension(value):
 
 
 class User(AbstractUser):
-    is_teacher = models.BooleanField(default=0)
+    is_teacher = models.BooleanField('Teacher status', default=0,
+                                     help_text='Designates whether the user have teacher access.')
 
     def __str__(self):
         return self.username

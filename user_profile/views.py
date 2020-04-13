@@ -18,6 +18,7 @@ class ProfileEdit(generic.FormView):
 
 
 class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView):
+    #@TODO Enable edit and add photo feature
     login_url = 'account:login'
 
     model = User
@@ -121,7 +122,7 @@ class PortfolioUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PortfolioDeleteView(LoginRequiredMixin, generic.DeleteView):
     #@TODO Manage permissions
     model = TeacherPortfolio
-    template_name = 'user_profile/portfolio_create_form.html'
+    template_name = 'user_profile/portfolio_detail.html'
 
     def get_success_url(self):
         success_url = reverse('user_profile:profile', args=[self.request.user.username])
