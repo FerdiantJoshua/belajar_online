@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Personal Information Details {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
+      integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<div class="container">
+
+  <div class="container bootstrap snippet">
+    <div class="row mb-5">
+      <div class="col-sm-10"><h1>{{ user_owner.first_name }} {{ user_owner.last_name }}</h1></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3"><!--left col-->
+
+        <div class="text-center">
+          {% if user_owner.userdetail.photos %}
+          <img src="{% get_media_prefix %}{{ user_owner.userdetail.photos }}" class="avatar rounded-circle img-thumbnail"
+               alt="avatar">
+          {% else %}
+          <img src="{% static 'images/blank_profile.png' %}" class="avatar rounded-circle img-thumbnail" alt="avatar">
+          {% endif %}
+          <h6 class="mt-2">Upload a different photo</h6>
+          <label class="custom-file">
+            <input type="file" id="file" class="custom-file-input photo-upload">
+            <span class="custom-file-control">Choose file</span>
+          </label>
+        </div>
+        <br>
+
+        <div class="card">
+          <div class="card-header">Contact <i class="fa fa-link fa-1x"></i></div>
+          <div class="card-body"><i class="fas fa-envelope-square"></i><a href="mailto:{{ user_owner.email }}"> {{ user_owner.email }}</a></div>
+        </div>
+        <br>
+
+        <ul class="list-group">
+          <li class="list-group-item text-muted">Activity <i class="fab fa-dashboard fa-1x"></i></li>
+          <li class="list-group-item text-right"><span class="float-left"><strong>Shares</strong></span> 125</li>
+          <li class="list-group-item text-right"><span class="float-left"><strong>Likes</strong></span> 13</li>
+          <li class="list-group-item text-right"><span class="float-left"><strong>Posts</strong></span> 37</li>
+          <li class="list-group-item text-right"><span class="float-left"><strong>Followers</strong></span> 78</li>
+        </ul>
+        <br>
+
+        <div class="card">
+          <div class="card-header">Social Media</div>
+          <div class="card-body">
+            <i class="fab fa-facebook fa-2x"></i> <i class="fab fa-github fa-2x"></i> <i class="fab fa-twitter fa-2x"></i>
+            <i class="fab fa-pinterest fa-2x"></i> <i class="fab fa-google-plus fa-2x"></i>
+          </div>
+        </div>
+        <br>
+
+      </div><!--/col-3-->
+      <div class="col-sm-9">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a href="" data-target="#profile" data-toggle="tab" class="nav-link {% if not need_edit %}active{% endif %}">Profile</a>
+          </li>
+          {% if is_self_owned %}
+          <li class="nav-item">
+            <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Message</a>
+          </li>
+          <li class="nav-item">
+            <a href="" data-target="#settings" data-toggle="tab" class="nav-link {% if need_edit %}active{% endif %}">Settings</a>
+          </li>
+          {% endif %}
+        </ul>
+
+        <div class="tab-content py-4">
+          <div class="tab-pane {% if not need_edit %}active{% endif %}" id="profile">
+            {% if user_owner.userdetail.cv %}
+            <h4><a href="{% get_media_prefix %}{{ user_owner.userdetail.cv }}">{{ user_owner.first_name }} {{ user_owner.last_name }}'s CV</a></h4>
+            {% endif %}
+
+            <h4>About</h4>
+            {% if user_owner.userdetail.about %}
+            <p>{{ user_owner.userdetail.about }}</p>
+            {% else %}
+            <p>No about yet.</p>
+            {% endif %}
+
+            <h4>Feedbacks</h4>
+            {% for appraisal in appraisals %}
+            <p>{{ appraisal.source_user.username }}: {{ appraisal.rating }} - {{ appraisal.feedback }} at
+              {{appraisal.date }}</p>
+            {% empty %}
+            <p>No feedback yet.</p>
+            {% endfor %}
+
+            {% if user_owner.is_teacher %}
+              <h4>Your Monthly Earning</h4>
+              {% for appraisal in appraisals %}
+                <p>Rp100.000.000</p>
+              {% empty %}
+                <p>No monthly earning yet.</p>
+              {% endfor %}
+
+              <h4>Experiences</h4>
+              <ul>
+                {% for porto in portfolios %}
+                  <li><a href="{{ porto.get_absolute_url }}">{{ porto }}</a></li>
+                {% empty %}
+                  <li>No recorded portofolio.</li>
+                {% endfor %}
+              </ul>
+              {% if is_self_owned %}
+                <a class="btn btn-primary" href="{% url 'user_profile:create_portfolio' %}">
+                  Add new portfolio
+                </a>
+              {% endif %}
+            {% endif %}
+
+          </div><!--/tab-pane-->
+          {% if is_self_owned %}
+          <div class="tab-pane" id="messages">
+            <div class="alert alert-info alert-dismissable">
+              <a class="panel-close close" data-dismiss="alert">×</a> This is an <strong>.alert</strong>. Use this to
+              show
+              important messages to the user.
+            </div>
+            <table class="table table-hover table-striped">
+              <tbody>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold">3 hrs ago</span> Here is your a link to the latest summary
+                  report from the..
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold">Yesterday</span> There has been a request on your account
+                  since that was..
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id
+                  dolor.
+                  Morbi venenatis lacinia rhoncus.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget
+                  luctus.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt
+                  ullamcorper eros.
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div><!--/tab-pane-->
+          <div class="tab-pane {% if need_edit %}active{% endif %}" id="settings">
+            {% if need_edit %}
+            <div class="alert alert-warning alert-dismissable">
+              <a class="panel-close close" data-dismiss="alert">×</a> Please fill in the form below completely.
+            </div>
+            {% endif %}
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Username</label>
+              <div class="col-lg-9">
+                <input type="text" readonly="readonly" class="form-control" value="{{ user_owner.username }}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Email</label>
+              <div class="col-lg-9">
+                <input type="text" readonly="readonly" class="form-control" value="{{ user_owner.email }}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">First Name</label>
+              <div class="col-lg-9">
+                <input type="text" readonly="readonly" class="form-control" value="{{ user_owner.first_name }}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label">Last Name</label>
+              <div class="col-lg-9">
+                <input type="text" readonly="readonly" class="form-control" value="{{ user_owner.last_name }}">
+              </div>
+            </div>
+            <form enctype="multipart/form-data" method="post" action="{{ user_owner.get_absolute_url }}">
+              {% csrf_token %}
+              {% for field in form %}
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">{{ field.label }}</label>
+                <div class="col-lg-9">
+                  {{ field }}
+                  {% if field.errors %}
+                  <div class="invalid-feedback">{{ field.errors }}</div>
+                  {% endif %}
+                  {% if field.help_text %}
+                  <small class="form-text text-muted">{{field.help_text}}</small>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"></label>
+                <div class="col-lg-9">
+                  <input type="reset" class="btn btn-secondary" value="Reset">
+                  <input type="submit" class="btn btn-primary" value="Save Changes">
+                </div>
+              </div>
+            </form>
+          </div>
+          {% endif %}
+        </div><!--/tab-pane-->
+      </div><!--/tab-content-->
+
+    </div><!--/col-9-->
+  </div><!--/row-->
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/account/user_details.js' %}"></script>
+{% endblock %}

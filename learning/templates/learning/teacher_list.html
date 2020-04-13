@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Portfolio {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
+      integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<section class="container mt-4 mb-4">
+  <div class="container">
+    <h1>Teacher List</h1>
+    <div class="row">
+      {% for teacher in teachers %}
+      <div class="col-md-6 mb-3">
+        <div class="d-flex flex-row border rounded">
+
+          <div class="p-0 w-25">
+            {% if teacher.userdetail.photos %}
+            <img src="{% get_media_prefix %}{{ teacher.userdetail.photos }}" class="border-0 img-thumbnail"
+                 alt="avatar">
+            {% else %}
+            <img src="{% static 'images/blank_profile.png' %}" class="border-0 img-thumbnail" alt="avatar">
+            {% endif %}
+          </div>
+          <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+            <h4 class="text-primary">{{ teacher.first_name }} {{ teacher.last_name }}</h4>
+            <h5 class="text-info">Professional Teacher</h5>
+            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0">
+              <li><i class="fab fa-linkedin"></i> LinkedIn</li>
+              <li><i class="fab fa-twitter-square"></i> Twitter</li>
+            </ul>
+            <p class="text-right m-0"><a href="{% url 'user_profile:profile' teacher.username %}" class="btn btn-primary"><i class="far fa-user"></i> View Profile</a>
+            </p>
+
+          </div>
+        </div>
+      </div>
+      {% empty %}
+        <p>No teachers so far :(</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,8 +1,8 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm, DateInput, Textarea
 
 from belajar_online.utils import set_fields_css_class
-from .models import User, UserDetails
+from .models import User, UserDetail
 
 
 class LoginForm(AuthenticationForm):
@@ -20,8 +20,8 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit)
-        if not UserDetails.objects.filter(pk=user.pk):
-            UserDetails(user=user).save()
+        if not UserDetail.objects.filter(pk=user.pk):
+            UserDetail(user=user).save()
         return user
 
     class Meta():
@@ -29,19 +29,16 @@ class RegistrationForm(UserCreationForm):
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
 
 
-class UserDetailsForm(ModelForm):
+class UserDetailForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(UserDetailsForm, self).__init__(*args, **kwargs)
+        super(UserDetailForm, self).__init__(*args, **kwargs)
         set_fields_css_class(self.fields)
 
     class Meta():
-        model = UserDetails
+        model = UserDetail
         fields = '__all__'
-        exclude = ['user']
-        help_texts = {
-            'ktp': 'Only accepts images',
-            'experiences_proofs': 'Only accepts images',
-        }
+        exclude = ['user', 'photos']
         widgets = {
             'date_of_birth': DateInput(attrs={'type': 'date'}),
+            'about': Textarea(),
         }

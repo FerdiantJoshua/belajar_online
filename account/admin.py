@@ -1,16 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, UserDetails, UserAppraisal
+from .models import User, UserDetail
 
 
-class UserDetailsInLine(admin.StackedInline):
-    model = UserDetails
+class UserDetailInLine(admin.StackedInline):
+    model = UserDetail
 
 
 class UserAdminEnhanced(UserAdmin):
-    inlines = [UserDetailsInLine]
+    inlines = [UserDetailInLine]
 
 
 admin.site.register(User, UserAdminEnhanced)
-admin.site.register(UserAppraisal)

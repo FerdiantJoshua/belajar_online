@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'user_profile',
     'learning',
     'main',
 ]
@@ -135,7 +136,6 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'belajar_online/static'),
-    os.path.join(BASE_DIR, 'account/static'),
 ]
 
 STATIC_URL = '/static/'
