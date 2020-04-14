@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from belajar_online.utils import add_invalid_css_class_to_form
@@ -27,7 +27,10 @@ class RegisterView(generic.FormView):
     model = User
     template_name = 'registration/register.html'
     form_class = RegistrationForm
-    success_url = reverse_lazy('user_profile:profile')
+
+    def get_success_url(self):
+        success_url = reverse('user_profile:profile', args=[self.request.user.username])
+        return success_url
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
