@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} Portfolio {% endblock %}
+{% block links %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/learning/jquery.datetimepicker.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container">
   <h1>Add New Lesson</h1>
@@ -13,7 +17,7 @@
       <div class="invalid-feedback">{{ field.errors }}</div>
       {% endif %}
       {% if field.help_text %}
-      <small class="form-text text-muted">{{field.help_text}}</small>
+      <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}
     </div>
     {% endfor %}
@@ -21,4 +25,9 @@
   </form>
   <a class="btn btn-secondary" href="{% url 'learning:list_lessons' %}">Back</a>
 </div>
+{% endblock %}
+{% block scripts %}
+<!--<script src="{% static 'js/learning/jquery.js' %}"></script>-->
+<script src="{% static 'js/learning/jquery.datetimepicker.full.min.js' %}"></script>
+<script src="{% static 'js/learning/datetimepicker.js' %}"></script>
 {% endblock %}

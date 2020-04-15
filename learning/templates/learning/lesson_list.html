@@ -3,6 +3,22 @@
 {% block content %}
 <div class="container">
   <div class="row">
+    <h4>Search</h4>
+  </div>
+  <form class="form" method="get">
+    <div class="form-group">
+        <div class="col-xs-6">
+          <input name="course" class="form-control" placeholder="Search course">
+        </div>
+    </div>
+    <div class="form-group">
+      <div class="col-xs-6">
+        <input name="teacher" class="form-control" placeholder="Search teacher">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" value="Search">Search</button>
+  </form>
+  <div class="row mt-4">
     <h1>Lessons</h1>
   </div>
   <div class="row">
@@ -20,7 +36,7 @@
       Add new lesson
     </a>
     {% endif %}
-    <a class="btn btn-secondary" href="{% url 'learning:list_lessons' %}">
+    <a class="btn btn-secondary" href="{% url 'main:index' %}">
       Back
     </a>
   </div>

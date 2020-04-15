@@ -13,23 +13,30 @@
       <h4>Teacher</h4>
       <p>{{ lesson.teacher.first_name }} {{ lesson.teacher.last_name }}</p>
 
-      <h4>Students</h4>
-      <p>{{ lesson.student }}</p>
+      <h4>Schedule</h4>
+      <ul>
+        <li>Start: {{ lesson.time_start }}</li>
+        <li>End  : {{ lesson.time_end }}</li>
+      </ul>
 
       <h4>Fee</h4>
-      <p>{{ lesson.fee }}</p>
+      <p>Rp{{ lesson.fee }}</p>
     </div>
   </div>
   <div class="row">
     <div class="tab-content">
-      <h4>Schedule</h4>
+      {% with students=lesson.student.all %}
+      <h4>Students ({{ students.count }})</h4>
+      {% if user.is_teacher %}
       <ul>
-        {% for schedule in lesson.schedule_set.all %}
-          <li>{{ schedule.get_day_of_week_display }} at {{ schedule.time }}</li>
+        {% for student in students %}
+          <li>{{ student.first_name }} {{ student.last_name }}</li>
         {% empty %}
-          <p>No schedule yet.</p>
+          <li>No students yet.</li>
         {% endfor %}
       </ul>
+      {% endif %}
+      {% endwith %}
     </div>
   </div>
   <div class="row">

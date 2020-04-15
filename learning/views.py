@@ -24,11 +24,12 @@ class LessonListView(LoginRequiredMixin, generic.ListView):
             course_ids = [] if not courses else list(map(lambda x: x.get('pk'), courses.values('pk')))
             teachers = User.objects.filter(first_name=self.request.GET.get('teacher'))
             teacher_ids = [] if not teachers else list(map(lambda x: x.get('pk'), teachers.values('pk')))
-            if course_name and teacher_name:
-                ids = set(course_ids).intersection((teacher_ids))
+            if bool(course_name) and bool(teacher_name):
+                lessons = Lesson.objects.filter(course__in=course_ids).filter(teacher__in=teacher_ids)
+            elif bool(course_name):
+                lessons = Lesson.objects.filter(course__in=course_ids)
             else:
-                ids = course_ids if course_ids else teacher_ids
-            lessons = Lesson.objects.filter(pk__in=ids)
+                lessons = Lesson.objects.filter(teacher__in=teacher_ids)
         else:
             lessons = Lesson.objects.all()
         return lessons
@@ -39,8 +40,17 @@ class LessonCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = LessonForm
 
     def get_success_url(self):
-        success_url = reverse('learning:list_lesson')
+        success_url = reverse('learning:list_lessons')
         return success_url
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.teacher = self.request.user
+        return super().form_valid(form)
 
     @add_invalid_css_class_to_form
     def form_invalid(self, form):
