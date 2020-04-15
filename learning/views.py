@@ -6,7 +6,8 @@ from django.views import generic
 from account.models import User
 from belajar_online.utils import add_invalid_css_class_to_form
 from .forms import LessonForm
-from .models import Lesson
+from .models import Lesson, Course
+
 
 #@TODO Finish this learning management views
 
@@ -14,6 +15,23 @@ class LessonListView(LoginRequiredMixin, generic.ListView):
     model = Lesson
     template_name = 'learning/lesson_list.html'
     context_object_name = 'lessons'
+
+    def get_queryset(self):
+        course_name = self.request.GET.get('course')
+        teacher_name = self.request.GET.get('teacher')
+        if course_name or teacher_name:
+            courses = Course.objects.filter(name=course_name)
+            course_ids = [] if not courses else list(map(lambda x: x.get('pk'), courses.values('pk')))
+            teachers = User.objects.filter(first_name=self.request.GET.get('teacher'))
+            teacher_ids = [] if not teachers else list(map(lambda x: x.get('pk'), teachers.values('pk')))
+            if course_name and teacher_name:
+                ids = set(course_ids).intersection((teacher_ids))
+            else:
+                ids = course_ids if course_ids else teacher_ids
+            lessons = Lesson.objects.filter(pk__in=ids)
+        else:
+            lessons = Lesson.objects.all()
+        return lessons
 
 
 class LessonCreateView(LoginRequiredMixin, generic.CreateView):

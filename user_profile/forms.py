@@ -2,13 +2,16 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm, DateInput
 
 from belajar_online.utils import set_fields_css_class
+from learning.models import Course
 from .models import TeacherPortfolio
 
 
 class PortfolioForm(ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(PortfolioForm, self).__init__(*args, **kwargs)
         set_fields_css_class(self.fields)
+        allowed_courses = list(map(lambda x: x['course'], TeacherPortfolio.objects.filter(teacher=user).values('course')))
+        self.fields['course'].queryset = Course.objects.exclude(pk__in=allowed_courses)
 
     def clean(self):
         is_course_exist = bool(self.cleaned_data.get('course'))

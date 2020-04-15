@@ -87,6 +87,11 @@ class PortfolioCreateView(LoginRequiredMixin, generic.CreateView):
         success_url = reverse('user_profile:profile', args=[self.request.user.username])
         return success_url
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.instance.teacher = self.request.user
