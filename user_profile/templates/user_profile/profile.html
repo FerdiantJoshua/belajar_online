@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} Personal Information Details {% endblock %}
-{% block links %}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
-      integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
-{% endblock %}
 {% block content %}
 <div class="container">
 
@@ -32,41 +28,32 @@
         <br>
 
         <div class="card">
-          <div class="card-header">Contact <i class="fa fa-link fa-1x"></i></div>
-          <div class="card-body"><i class="fas fa-envelope-square"></i><a href="mailto:{{ user_owner.email }}"> {{ user_owner.email }}</a></div>
+          <div class="card-header">Rating</div>
+          <div class="card-body"><i class="yellow fas fa-star"></i><i class="yellow fas fa-star"></i><i class="yellow fas fa-star"></i><i class="yellow fas fa-star"></i><i class="yellow fas fa-star"></i> (0)</div>
         </div>
         <br>
 
-        <ul class="list-group">
-          <li class="list-group-item text-muted">Activity <i class="fab fa-dashboard fa-1x"></i></li>
-          <li class="list-group-item text-right"><span class="float-left"><strong>Shares</strong></span> 125</li>
-          <li class="list-group-item text-right"><span class="float-left"><strong>Likes</strong></span> 13</li>
-          <li class="list-group-item text-right"><span class="float-left"><strong>Posts</strong></span> 37</li>
-          <li class="list-group-item text-right"><span class="float-left"><strong>Followers</strong></span> 78</li>
-        </ul>
-        <br>
-
-        <div class="card">
-          <div class="card-header">Social Media</div>
-          <div class="card-body">
-            <i class="fab fa-facebook fa-2x"></i> <i class="fab fa-github fa-2x"></i> <i class="fab fa-twitter fa-2x"></i>
-            <i class="fab fa-pinterest fa-2x"></i> <i class="fab fa-google-plus fa-2x"></i>
-          </div>
-        </div>
-        <br>
+<!--        <ul class="list-group">-->
+<!--          <li class="list-group-item text-muted">Activity <i class="fas fa-tachometer-alt"></i></li>-->
+<!--          <li class="list-group-item text-right"><span class="float-left"><strong>Shares</strong></span> 125</li>-->
+<!--          <li class="list-group-item text-right"><span class="float-left"><strong>Likes</strong></span> 13</li>-->
+<!--          <li class="list-group-item text-right"><span class="float-left"><strong>Posts</strong></span> 37</li>-->
+<!--          <li class="list-group-item text-right"><span class="float-left"><strong>Followers</strong></span> 78</li>-->
+<!--        </ul>-->
+<!--        <br>-->
 
       </div><!--/col-3-->
       <div class="col-sm-9">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a href="" data-target="#profile" data-toggle="tab" class="nav-link {% if not need_edit %}active{% endif %}">Profile</a>
+            <a href="" data-target="#profile" data-toggle="tab" class="nav-link {% if not need_edit %}active{% endif %}"><i class="fas fa-user"></i> Profile</a>
           </li>
           {% if is_self_owned %}
           <li class="nav-item">
-            <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Message</a>
+            <a href="" data-target="#messages" data-toggle="tab" class="nav-link"><i class="fas fa-bell"></i> Message</a>
           </li>
           <li class="nav-item">
-            <a href="" data-target="#settings" data-toggle="tab" class="nav-link {% if need_edit %}active{% endif %}">Settings</a>
+            <a href="" data-target="#settings" data-toggle="tab" class="nav-link {% if need_edit %}active{% endif %}"><i class="fas fa-cogs"></i> Settings</a>
           </li>
           {% endif %}
         </ul>
