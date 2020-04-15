@@ -18,22 +18,6 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     #@TODO Add lesson model validation
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Teacher', related_name='lesson_teacher')
-    student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Student', related_name='lesson_student')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course')
-    fee = models.IntegerField('Fee', default=0, blank=True)
-
-    class Meta:
-        unique_together = (('teacher', 'student', 'course'),)
-
-    def get_absolute_url(self):
-        return reverse_lazy('learning:detail_lesson', args=[self.pk])
-
-    def __str__(self):
-        return f'Lesson: {self.teacher} & {self.student} on {self.course}'
-
-
-class Schedule(models.Model):
     DAY_OF_WEEK_CHOICES = [
         ('MON', 'Monday'),
         ('TUE', 'Tuesday'),
@@ -44,17 +28,24 @@ class Schedule(models.Model):
         ('SUN', 'Sunday'),
     ]
 
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='Lesson')
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Teacher', related_name='teacher_lessons')
+    student = models.ManyToManyField(User, db_table='learning_attend_lesson', verbose_name='Student', related_name='student_lessons', blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course')
     day_of_week = models.CharField(
         'Day of Week',
         max_length=3,
-        default='Monday',
-        choices=DAY_OF_WEEK_CHOICES
+        default='MON',
+        choices=DAY_OF_WEEK_CHOICES,
+        null=True,
     )
-    time = models.TimeField('Time')
+    time = models.TimeField('Time', null=True)
+    fee = models.IntegerField('Fee', default=0, blank=True)
 
     class Meta:
-        unique_together = (('lesson', 'day_of_week', 'time'),)
+        unique_together = (('teacher', 'course', 'day_of_week', 'time'),)
+
+    def get_absolute_url(self):
+        return reverse_lazy('learning:detail_lesson', args=[self.pk])
 
     def __str__(self):
-        return f'{self.lesson} schedule on {self.day_of_week} at {self.time}'
+        return f'Lesson: {self.teacher} on {self.course}'

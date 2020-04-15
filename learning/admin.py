@@ -1,17 +1,7 @@
 from django.contrib import admin
 
-from .models import Course, Schedule, Lesson
-
-
-class ScheduleInLine(admin.StackedInline):
-    model = Schedule
-    extra = 1
-    min_num = 0
-
-
-class LessonAdmin(admin.ModelAdmin):
-    inlines = [ScheduleInLine]
+from .models import Course, Lesson
 
 
 admin.site.register(Course)
-admin.site.register(Lesson, LessonAdmin)
+admin.site.register(Lesson)

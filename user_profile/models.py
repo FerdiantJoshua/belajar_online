@@ -43,7 +43,8 @@ class TeacherPortfolio(models.Model):
         UW = 'UW', 'Unweighted'
 
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Teacher', null=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course', null=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Course', null=True,
+                               help_text='You can only add unowned portfolio on a single course.')
     score = models.DecimalField('Score', max_digits=3, decimal_places=2,
                                 validators=[MinValueValidator(0), MaxValueValidator(5)])
     gpa_type = models.CharField('GPA Type', max_length=2, choices=GPAType.choices, default=GPAType.UW,
