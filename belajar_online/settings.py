@@ -12,6 +12,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+from environs import Env
+
+env = Env()
+env.read_env()
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+DEBUG = env.bool('DEBUG')
+DB_NAME = env('DB_NAME')
+DB_USER = env('DB_USER')
+DB_PASSWORD = env('DB_PASSWORD')
+DB_HOST = env('DB_HOST')
+DB_PORT = env('DB_PORT')
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,9 +36,9 @@ LOGOUT_REDIRECT_URL = '/'
 SECRET_KEY = 'zd!#x!&h+z8%y%h%)crs9mq@xzd1-*%8v5c15fxmk(x+vm0unp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost', '192.168.1.24']
+ALLOWED_HOSTS = ALLOWED_HOSTS
 
 
 # Application definition
@@ -81,11 +93,11 @@ WSGI_APPLICATION = 'belajar_online.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'belajar_online',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
