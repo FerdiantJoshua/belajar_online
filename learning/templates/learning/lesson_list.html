@@ -8,12 +8,12 @@
   <form class="form" method="get">
     <div class="form-group">
         <div class="col-xs-6">
-          <input name="course" class="form-control" placeholder="Search course">
+          <input name="course" class="form-control" placeholder="Search course" value="{{ form_init.course }}">
         </div>
     </div>
     <div class="form-group">
       <div class="col-xs-6">
-        <input name="teacher" class="form-control" placeholder="Search teacher">
+        <input name="teacher" class="form-control" placeholder="Search teacher" value="{{ form_init.teacher }}">
       </div>
     </div>
     <button type="submit" class="btn btn-primary" value="Search">Search</button>

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -20,19 +21,29 @@ class LessonListView(LoginRequiredMixin, generic.ListView):
         course_name = self.request.GET.get('course')
         teacher_name = self.request.GET.get('teacher')
         if course_name or teacher_name:
-            courses = Course.objects.filter(name=course_name)
+            courses = Course.objects.filter(name__icontains=course_name)
             course_ids = [] if not courses else list(map(lambda x: x.get('pk'), courses.values('pk')))
-            teachers = User.objects.filter(first_name=self.request.GET.get('teacher'))
+
+            teachers = User.objects.filter(
+                Q(first_name__icontains=teacher_name) |
+                Q(username__icontains=teacher_name) |
+                Q(last_name__icontains=teacher_name)
+            )
             teacher_ids = [] if not teachers else list(map(lambda x: x.get('pk'), teachers.values('pk')))
             if bool(course_name) and bool(teacher_name):
-                lessons = Lesson.objects.filter(course__in=course_ids).filter(teacher__in=teacher_ids)
+                lessons = Lesson.objects.filter(Q(course__in=course_ids) & Q(teacher__in=teacher_ids))
             elif bool(course_name):
-                lessons = Lesson.objects.filter(course__in=course_ids)
+                lessons = Lesson.objects.filter(Q(course__in=course_ids))
             else:
-                lessons = Lesson.objects.filter(teacher__in=teacher_ids)
+                lessons = Lesson.objects.filter(Q(teacher__in=teacher_ids))
         else:
             lessons = Lesson.objects.all()
         return lessons
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['form_init'] = {'course': self.request.GET.get('course'), 'teacher': self.request.GET.get('teacher')}
+        return context
 
 
 class LessonCreateView(LoginRequiredMixin, generic.CreateView):
