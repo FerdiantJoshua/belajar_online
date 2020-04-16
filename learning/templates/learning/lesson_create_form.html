@@ -16,8 +16,12 @@
       {% if field.errors %}
       <div class="invalid-feedback">{{ field.errors }}</div>
       {% endif %}
-      {% if field.help_text %}
-      <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% if field.name == 'course' %}
+        <small class="form-text text-muted">See no courses? Create your first portfolio right <a href="{% url 'user_profile:create_portfolio' %}">here</a></small>
+      {% else %}
+        {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
       {% endif %}
     </div>
     {% endfor %}

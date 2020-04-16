@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('score', models.DecimalField(decimal_places=2, max_digits=3, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5)], verbose_name='Score')),
                 ('gpa_type', models.CharField(choices=[('W', 'Weighted'), ('UW', 'Unweighted')], default='UW', help_text='Maximum GPA 4.0 for "Weighted", and 5.0 for "Unweighted"', max_length=2, verbose_name='GPA Type')),
                 ('proof', models.ImageField(default='', upload_to='learning/teacher/proof/%Y%m%d', verbose_name='Experiences Proofs')),
-                ('course', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='learning.Course', verbose_name='Course')),
+                ('course', models.ForeignKey(help_text='You can only have one portfolio per course', null=True, on_delete=django.db.models.deletion.CASCADE, to='learning.Course', verbose_name='Course')),
                 ('teacher', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Teacher')),
             ],
             options={
