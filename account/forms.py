@@ -29,6 +29,12 @@ class RegistrationForm(UserCreationForm):
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
 
 
+class UserDetailPhotoForm(ModelForm):
+    class Meta():
+        model = UserDetail
+        fields = ['photos']
+
+
 class UserDetailForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserDetailForm, self).__init__(*args, **kwargs)

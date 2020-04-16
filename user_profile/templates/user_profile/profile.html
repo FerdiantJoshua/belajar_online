@@ -13,17 +13,20 @@
       <div class="col-sm-3"><!--left col-->
 
         <div class="text-center">
-          {% if user_owner.userdetail.photos %}
-          <img src="{% get_media_prefix %}{{ user_owner.userdetail.photos }}" class="avatar rounded-circle img-thumbnail"
-               alt="avatar">
-          {% else %}
-          <img src="{% static 'images/blank_profile.png' %}" class="avatar rounded-circle img-thumbnail" alt="avatar">
-          {% endif %}
-          <h6 class="mt-2">Upload a different photo</h6>
-          <label class="custom-file">
-            <input type="file" id="file" class="custom-file-input photo-upload">
-            <span class="custom-file-control">Choose file</span>
-          </label>
+          <form enctype="multipart/form-data" method="post" action="{% url 'user_profile:update_profile_photo' user_owner %}">
+            {% csrf_token %}
+            {% if user_owner.userdetail.photos %}
+            <img src="{% get_media_prefix %}{{ user_owner.userdetail.photos }}" class="avatar rounded-circle img-thumbnail" alt="avatar">
+            {% else %}
+            <img src="{% static 'images/blank_profile.png' %}" class="avatar rounded-circle img-thumbnail" alt="avatar">
+            {% endif %}
+            <h6 class="mt-2">Upload a different photo</h6>
+            <label class="custom-file">
+              <input type="file" id="id_photos" class="custom-file-input photo-upload" name="photos" accept="image/*">
+              <span class="custom-file-control">Choose file</span>
+            </label>
+            <input id="save-photos" type="submit" class="btn btn-secondary" value="Save" hidden>
+          </form>
         </div>
         <br>
 

@@ -13,5 +13,6 @@ $(document).ready(function() {
 
   $(".photo-upload").on('change', function(){
       readURL(this);
+      $('#save-photos').attr("hidden", false);
     });
 });

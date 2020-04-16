@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic, View
+from django.views.decorators.http import require_http_methods
 
-from account.forms import UserDetailForm
+from account.forms import UserDetailForm, UserDetailPhotoForm
 from account.models import UserDetail, User
 from .forms import PortfolioForm
 from .models import TeacherPortfolio
@@ -77,6 +79,17 @@ class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView
     def form_invalid(self, form):
         print(form.errors)
         return super().form_invalid(form)
+
+
+@require_http_methods(['GET', 'POST'])
+@login_required
+def update_profile_photo(request, username):
+    if request.method == 'POST':
+        user_detail = request.user.userdetail
+        form = UserDetailPhotoForm(request.POST, request.FILES, instance=user_detail)
+        if form.is_valid():
+            form.save()
+    return redirect('user_profile:profile', username=username)
 
 
 class PortfolioCreateView(LoginRequiredMixin, generic.CreateView):
