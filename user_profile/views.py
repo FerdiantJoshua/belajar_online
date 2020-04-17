@@ -20,9 +20,6 @@ class ProfileEdit(generic.FormView):
 
 
 class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView):
-    #@TODO Enable edit and add photo feature
-    login_url = 'account:login'
-
     model = User
     template_name = 'user_profile/profile.html'
     form_class = UserDetailForm
@@ -66,7 +63,7 @@ class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView
         context['is_self_owned'] = self.user_owner == self.request.user
         if context['is_self_owned']:
             context['need_edit'] = bool(context['form'].errors) or not context['form'].instance.ktp
-        context['appraisals'] = self.user_owner.appraisal_target_user.order_by('-date').all()
+        # context['appraisals'] = self.user_owner.appraisal_target_user.order_by('-date').all()
         context['portfolios'] = TeacherPortfolio.objects.filter(teacher=self.user_owner)
         return context
 
@@ -74,11 +71,6 @@ class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView
         form.instance.user = self.user_owner
         form.save()
         return super().form_valid(form)
-
-    @add_invalid_css_class_to_form
-    def form_invalid(self, form):
-        print(form.errors)
-        return super().form_invalid(form)
 
 
 @require_http_methods(['GET', 'POST'])

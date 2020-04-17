@@ -1,36 +1,120 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} Lessons {% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row">
+  <div class="row mt-4">
     <h4>Search</h4>
   </div>
   <form class="form" method="get">
     <div class="form-group">
         <div class="col-xs-6">
-          <input name="course" class="form-control" placeholder="Search course" value="{{ form_init.course }}">
+          <input name="course" class="form-control" placeholder="Search course" value="{{ search_init_data.course }}">
         </div>
     </div>
     <div class="form-group">
       <div class="col-xs-6">
-        <input name="teacher" class="form-control" placeholder="Search teacher" value="{{ form_init.teacher }}">
+        <input name="teacher" class="form-control" placeholder="Search teacher" value="{{ search_init_data.teacher }}">
       </div>
     </div>
     <button type="submit" class="btn btn-primary" value="Search">Search</button>
   </form>
+
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger alert-dismissable mt-4">
+        <a class="panel-close close" data-dismiss="alert">×</a> {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
   <div class="row mt-4">
     <h1>Lessons</h1>
   </div>
   <div class="row">
-    <ul>
-      {% for lesson in lessons %}
-        <li><a href="{{ lesson.get_absolute_url }}">{{ lesson }}</a></li>
-      {% empty %}
-        <li>No recorded lesson.</li>
-      {% endfor %}
-    </ul>
+    {% for lesson in lessons %}
+    <div class="col-md-6 mb-3">
+      <div class="d-flex flex-row border rounded">
+
+        <div class="p-0 w-25">
+          {% if lesson.teacher.userdetail.photos %}
+          <img src="{% get_media_prefix %}{{ lesson.teacher.userdetail.photos }}" class="border-0 img-thumbnail"
+               alt="avatar">
+          {% else %}
+          <img src="{% static 'images/blank_profile.png' %}" class="border-0 img-thumbnail" alt="avatar">
+          {% endif %}
+        </div>
+        <div id="lesson_{{ lesson.id }}" class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+          <h4 class="text-primary">{{ lesson.course }}</h4>
+          <h5 class="text-info">{{ lesson.teacher.first_name }} {{ lesson.teacher.last_name }}</h5>
+          <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0">
+            <li><i class="fas fa-calendar-alt"></i> {{ lesson.time_start|date:'D, d M Y' }}</li>
+            <li><i class="fas fa-clock"></i> {{ lesson.time_start|date:'H:i' }} - {{ lesson.time_end|date:'H:i' }}</li>
+            <li><i class="fas fa-users"></i> {{ lesson.student_count }}/{{ lesson.max_students }}</li>
+            <li><i class="fas fa-money-bill-alt"></i> Rp{{ lesson.fee }}</li>
+          </ul>
+          {% if user.is_teacher %}
+          <p class="text-right m-0">
+            <a href="{{ lesson.get_absolute_url }}" class="btn btn-primary">
+              <i class="fas fa-school"></i> View Lesson
+            </a>
+          </p>
+          {% else %}
+          <p class="text-right m-0">
+            <a id="{{ lesson.id }}" href="#" class="btn btn-primary book-button" data-toggle="modal" data-target="#exampleModal">
+            <i class="fas fa-handshake"></i> Book
+            </a>
+          </p>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    {% empty %}
+      <p>There is no lesson currently.</p>
+    {% endfor %}
   </div>
+
+<!--PAGINATION BOOTSTRAP-->
+<!--  <nav aria-label="...">-->
+<!--    <ul class="pagination">-->
+<!--      <li class="page-item disabled">-->
+<!--        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+<!--      </li>-->
+<!--      <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--      <li class="page-item active" aria-current="page">-->
+<!--        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>-->
+<!--      </li>-->
+<!--      <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#">Next</a>-->
+<!--    </ul>-->
+<!--  </nav>-->
+
+
   <div class="row">
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+
+  <div class="row mt-4">
     {% if user.is_teacher %}
     <a class="btn btn-primary" href="{% url 'learning:create_lesson' %}">
       Add new lesson
@@ -41,4 +125,43 @@
     </a>
   </div>
 </div>
+
+<!-- Book Confirmation Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="modal-body" class="modal-body">
+<!--        Will be filled by JavaScript-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I change my mind</button>
+        <form method="post" action="{% url 'learning:book_lesson' %}">
+          {% csrf_token %}
+          <input id="id_lesson" type="text" name="lesson" value="" class="form-control" hidden readonly>
+          <button type="submit" class="btn btn-primary">Yes, book it</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('.book-button').each((key, value) => {
+    value.addEventListener('click', () => {
+      $('#modal-body').empty()
+      $('#lesson_'+value.id).children().clone().appendTo('#modal-body')
+      $('#modal-body').children('p').remove()
+      $('#id_lesson')[0].value = value.id
+    })
+  })
+})
+</script>
 {% endblock %}

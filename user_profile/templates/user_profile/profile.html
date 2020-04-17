@@ -74,13 +74,13 @@
             <p>No about yet.</p>
             {% endif %}
 
-            <h4>Feedbacks</h4>
-            {% for appraisal in appraisals %}
-            <p>{{ appraisal.source_user.username }}: {{ appraisal.rating }} - {{ appraisal.feedback }} at
-              {{appraisal.date }}</p>
-            {% empty %}
-            <p>No feedback yet.</p>
-            {% endfor %}
+<!--            <h4>Feedbacks</h4>-->
+<!--            {% for appraisal in appraisals %}-->
+<!--            <p>{{ appraisal.source_user.username }}: {{ appraisal.rating }} - {{ appraisal.feedback }} at-->
+<!--              {{appraisal.date }}</p>-->
+<!--            {% empty %}-->
+<!--            <p>No feedback yet.</p>-->
+<!--            {% endfor %}-->
 
             {% if user_owner.is_teacher %}
               <h4>Your Monthly Earning</h4>

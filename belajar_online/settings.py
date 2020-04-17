@@ -27,6 +27,7 @@ DB_PORT = env('DB_PORT')
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 # Quick-start development settings - unsuitable for production
@@ -143,6 +144,11 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Messaging
+# https://docs.djangoproject.com/en/3.0/ref/contrib/messages/
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -157,3 +163,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Media files (user-uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ETC
+NUMBER_GROUPING = 3
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'
+DECIMAL_SEPARATOR = ','
