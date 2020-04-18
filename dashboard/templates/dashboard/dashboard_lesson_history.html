@@ -1,0 +1,28 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% block dashboard_content %}
+<div class="container">
+  <h1>{% if not user.is_superuser or not user.is_staff %}Your{% endif %} Lessons</h1>
+  <h2>Current</h2>
+  <div class="row">
+    <ul>
+      {% for lesson in current_lessons %}
+        <li><a href="{{ lesson.get_absolute_url }}">{{ lesson }}</a></li>
+      {% empty %}
+        <li>No recorded current lessons.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <h2>Finished</h2>
+  <div class="row">
+    <ul>
+      {% for lesson in finished_lessons %}
+        <li><a href="{{ lesson.get_absolute_url }}">{{ lesson }}</a></li>
+      {% empty %}
+        <li>No recorded finished lessons.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

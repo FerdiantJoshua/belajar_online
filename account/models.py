@@ -1,7 +1,15 @@
+import random
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
+
+
+def user_directory_path(instance, filename):
+    # Will be formatted as 'account/{id}_{username}/{salt}_{filename}'
+    salt = random.randint(0, 99999)
+    return f'account/{instance.user.id}_{instance.user.username}/{salt:05d}_{filename}'
 
 
 def validate_file_extension(value):

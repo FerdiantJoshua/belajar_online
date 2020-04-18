@@ -1,12 +1,11 @@
+import datetime
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from account.models import User
-
-
-# def is_user_teacher(value):
-#     if
 
 
 class Course(models.Model):
@@ -40,10 +39,31 @@ class Lesson(models.Model):
 
 
 class Booking(models.Model):
+    EXPIRY_MINUTE_TIME = 30
+
+    PENDING = 'P'
+    ACCEPTED = 'A'
+    REJECTED = 'R'
+    CANCELLED = 'C'
+    #@TODO Improve way of referring status (still written status='P' in booking_list.html)
+    STATUS_CHOICE = [
+        ('P', 'Pending'),
+        ('A', 'Accepted'),
+        ('R', 'Rejected'),
+        ('C', 'Cancelled'),
+    ]
+
     student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Student')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='Lesson')
     time_booked = models.DateTimeField('Time Booked', auto_now_add=True, null=True, blank=False)
-    is_active = models.BooleanField('Is Active', default=0)
+    proof = models.ImageField('Transfer Proof', upload_to='learning/booking/proof/%Y/%m/%d/', null=True, blank=False)
+    status = models.CharField('Status', max_length=1, choices=STATUS_CHOICE, default=PENDING, blank=False)
+
+    def is_booking_expired(self):
+        return self.status==self.PENDING and self.time_booked < timezone.now() - datetime.timedelta(minutes=self.EXPIRY_MINUTE_TIME)
+
+    def get_absolute_url(self):
+        return reverse_lazy('learning:detail_booking', args=[self.pk])
 
     def __str__(self):
         return f'Booking: {self.student} on {self.lesson}'

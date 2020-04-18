@@ -58,6 +58,11 @@ class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView
             form.fields.pop('cv')
         return form
 
+    def form_valid(self, form):
+        form.instance.user = self.user_owner
+        form.save()
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_self_owned'] = self.user_owner == self.request.user
@@ -66,11 +71,6 @@ class ProfileView(LoginRequiredMixin, generic.edit.FormMixin, generic.DetailView
         # context['appraisals'] = self.user_owner.appraisal_target_user.order_by('-date').all()
         context['portfolios'] = TeacherPortfolio.objects.filter(teacher=self.user_owner)
         return context
-
-    def form_valid(self, form):
-        form.instance.user = self.user_owner
-        form.save()
-        return super().form_valid(form)
 
 
 @require_http_methods(['GET', 'POST'])

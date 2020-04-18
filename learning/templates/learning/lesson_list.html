@@ -18,6 +18,7 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary" value="Search">Search</button>
+    <input type="reset" class="btn btn-secondary" value="Clear">
   </form>
 
   {% if messages %}
@@ -26,9 +27,17 @@
       <div class="alert alert-danger alert-dismissable mt-4">
         <a class="panel-close close" data-dismiss="alert">×</a> {{ message }}
       </div>
+      {% elif message.tags == 'info' %}
+      <div class="alert alert-info alert-dismissable mt-4">
+        <a class="panel-close close" data-dismiss="alert">×</a> {{ message }}
+      </div>
       {% endif %}
     {% endfor %}
   {% endif %}
+
+  <div class="d-flex justify-content-end">
+    Showing {{ lessons.count }} of {{ lesson_count }} results found
+  </div>
 
   <div class="row mt-4">
     <h1>Lessons</h1>
@@ -73,7 +82,7 @@
       </div>
     </div>
     {% empty %}
-      <p>There is no lesson currently.</p>
+      <p>There is no lesson found with that criteria.</p>
     {% endfor %}
   </div>
 
@@ -152,16 +161,5 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script>
-$(document).ready(function() {
-  $('.book-button').each((key, value) => {
-    value.addEventListener('click', () => {
-      $('#modal-body').empty()
-      $('#lesson_'+value.id).children().clone().appendTo('#modal-body')
-      $('#modal-body').children('p').remove()
-      $('#id_lesson')[0].value = value.id
-    })
-  })
-})
-</script>
+<script src="{% static 'js/learning/lesson_list.js' %}"></script>
 {% endblock %}

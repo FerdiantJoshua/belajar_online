@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12 mb-3">
+    <h4 class="text-primary">Course</h4>
+    <p>{{ lesson.course }}</p>
+    <h5 class="text-info">Teacher</h5>
+    <p>{{ lesson.teacher.first_name }} {{ lesson.teacher.last_name }}</p>
+    <ul class="m-0" style="list-style: none; margin:0; padding: 0">
+      <li><i class="fas fa-calendar-alt"></i> {{ lesson.time_start|date:'D, d M Y' }}</li>
+      <li><i class="fas fa-clock"></i> {{ lesson.time_start|date:'H:i' }} - {{ lesson.time_end|date:'H:i' }}</li>
+      <li><i class="fas fa-users"></i> {{ lesson.student_count }}/{{ lesson.max_students }}</li>
+      <li><i class="fas fa-money-bill-alt"></i> Rp{{ lesson.fee }}</li>
+    </ul>
+  </div>
+
+  <div class="col-md-12 mb-3">
+    <div class="tab-content">
+      {% with students=lesson.student.all %}
+      <h4>Students ({{ students.count }})</h4>
+      {% if user.is_teacher %}
+      <ul>
+        {% for student in students %}
+          <li>{{ student.first_name }} {{ student.last_name }}</li>
+        {% empty %}
+          <li>No students yet.</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</div>

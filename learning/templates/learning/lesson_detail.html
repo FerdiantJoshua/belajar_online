@@ -5,40 +5,9 @@
   <div class="row">
     <h1>Lesson</h1>
   </div>
-  <div class="row">
-    <div class="tab-content">
-      <h4>Course</h4>
-      <p>{{ lesson.course }}</p>
 
-      <h4>Teacher</h4>
-      <p>{{ lesson.teacher.first_name }} {{ lesson.teacher.last_name }}</p>
+  {% include 'learning/lesson_display.html' %}
 
-      <h4>Schedule</h4>
-      <ul>
-        <li>Start: {{ lesson.time_start }}</li>
-        <li>End  : {{ lesson.time_end }}</li>
-      </ul>
-
-      <h4>Fee</h4>
-      <p>Rp{{ lesson.fee }}</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="tab-content">
-      {% with students=lesson.student.all %}
-      <h4>Students ({{ students.count }})</h4>
-      {% if user.is_teacher %}
-      <ul>
-        {% for student in students %}
-          <li>{{ student.first_name }} {{ student.last_name }}</li>
-        {% empty %}
-          <li>No students yet.</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
-    </div>
-  </div>
   <div class="row">
     {% if user == lesson.teacher %}
     <a class="btn btn-primary" href="{% url 'learning:edit_lesson' lesson.id %}">

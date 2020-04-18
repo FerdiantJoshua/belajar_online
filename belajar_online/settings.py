@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'dashboard',
     'user_profile',
     'learning',
     'main',
@@ -155,6 +156,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'belajar_online/static'),
     os.path.join(BASE_DIR, 'learning/static'),
+    os.path.join(BASE_DIR, 'dashboard/static'),
 ]
 
 STATIC_URL = '/static/'

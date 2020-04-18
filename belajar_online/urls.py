@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('account/', include('account.urls')),
     path('learning/', include('learning.urls')),
+    path('dashboard/', include('dashboard.urls')),
     path('profile/', include('user_profile.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
 + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
