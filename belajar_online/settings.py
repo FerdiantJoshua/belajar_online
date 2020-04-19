@@ -69,6 +69,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+HIDE_NAV = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
+
+HIDE_FOOTER = [
+    'account:login',
+    'account:register'
+]
+
+HIDE_SCROLLBAR = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
+
 ROOT_URLCONF = 'belajar_online.urls'
 
 TEMPLATES = [

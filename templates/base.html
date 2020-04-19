@@ -29,6 +29,19 @@
     {% block links %}
     {% endblock %}
 
+    {% if hide_scrollbar %}
+    <style>
+      html {
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+    </style>
+    {% endif %}
+
     {% if is_dev_mode %}
       <style>
         body * {

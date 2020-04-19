@@ -1,4 +1,5 @@
 from belajar_online import settings
+from django.urls import reverse_lazy
 
 def set_fields_css_class(fields):
     for key in fields:
@@ -18,6 +19,15 @@ def add_invalid_css_class_to_form(func):
 
 
 def context_processors(request):
-    return { 
-        'is_dev_mode': settings.DEV_MODE
-    }
+    context = {'is_dev_mode': settings.DEV_MODE}
+
+    if request.build_absolute_uri('?').split(request.get_host(), 1)[1] in list(map(reverse_lazy, settings.HIDE_NAV)):
+        context['hide_nav'] = True
+
+    if request.build_absolute_uri('?').split(request.get_host(), 1)[1] in list(map(reverse_lazy, settings.HIDE_FOOTER)):
+        context['hide_footer'] = True
+        
+    if request.build_absolute_uri('?').split(request.get_host(), 1)[1] in list(map(reverse_lazy, settings.HIDE_SCROLLBAR)):
+        context['hide_scrollbar'] = True
+        
+    return context
