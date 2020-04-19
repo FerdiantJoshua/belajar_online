@@ -18,11 +18,27 @@ env = Env()
 env.read_env()
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 DEBUG = env.bool('DEBUG')
+DEV_MODE = env.bool('DEV_MODE')
 DB_NAME = env('DB_NAME')
 DB_USER = env('DB_USER')
 DB_PASSWORD = env('DB_PASSWORD')
 DB_HOST = env('DB_HOST')
 DB_PORT = env('DB_PORT')
+
+HIDE_NAV = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
+HIDE_FOOTER = [
+    'account:login',
+    'account:register'
+]
+HIDE_SCROLLBAR = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,6 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'belajar_online.utils.context_processors'
             ],
         },
     },
