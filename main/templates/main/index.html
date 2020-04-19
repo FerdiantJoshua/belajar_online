@@ -16,7 +16,15 @@
     <div class="container text-center">
       {% if user.is_authenticated %}
           <p class="is-size-4-desktop is-size-5-tablet is-size-5-mobile">Hello, {{ user.first_name }} {{ user.last_name }}!</p> <br>
-          <button class="button is-link">Go to dashboard <i class="ml-5 fa fa-arrow-right"></i></button>
+          {% if user.is_teacher %}
+          <a class="button is-link" href="{% url 'user_profile:profile' user.id %}">
+            Go to profile <i class="ml-5 fa fa-arrow-right"></i>
+          </a>
+          {% else %}
+          <a class="button is-link" href="{% url 'learning:list_lessons' %}">
+            Go to lesson <i class="ml-5 fa fa-arrow-right"></i>
+          </a>
+          {% endif %}
       {% else %}
       <div class="columns text-center">
         <div class="column is-2"></div>
