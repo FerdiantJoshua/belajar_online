@@ -17,7 +17,7 @@
       {% if user.is_authenticated %}
           <p class="is-size-4-desktop is-size-5-tablet is-size-5-mobile">Hello, {{ user.first_name }} {{ user.last_name }}!</p> <br>
           {% if user.is_teacher %}
-          <a class="button is-link" href="{% url 'user_profile:profile' user.id %}">
+          <a class="button is-link" href="{% url 'user_profile:profile' user.username %}">
             Go to profile <i class="ml-5 fa fa-arrow-right"></i>
           </a>
           {% else %}
