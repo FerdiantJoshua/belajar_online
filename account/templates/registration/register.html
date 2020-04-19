@@ -1,23 +1,142 @@
 {% extends 'base.html' %}
-{% block title %} Register {% endblock %}
+{% block title %} Login {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-tooltip@3.0.2/dist/css/bulma-tooltip.min.css">
+{% endblock %}
 {% block content %}
-<div class="container">
-  <h1>Register</h1>
-  <form method="post" action="{% url 'account:register' %}">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group">
-      {{ field }}
-      {% if field.errors %}
-      <div class="invalid-feedback">{{ field.errors }}</div>
-      {% endif %}
-      {% if field.help_text %}
-      <small class="form-text text-muted">{{field.help_text}}</small>
-      {% endif %}
-    </div>
-    {% endfor %}
-    <p>Already have an account? Sign in <a href="{% url 'account:login' %}">here</a></p>
-    <button type="submit" class="btn btn-primary" value="Register">Register</button>
-  </form>
+<div class="hero is-fullheight is-light">
+  <div class="hero-body">
+      <div class="container">
+          <div class="columns">
+              <div class="column box is-6-desktop is-offset-3-desktop is-8-tablet is-offset-2-tablet" style="padding: 15px 30px">
+                  <h2 class="title has-text-centered">Register</h2>          
+                  <form action="{% url 'account:register' %}" method="post">
+                    {% csrf_token %}
+                      {% for field in form %}
+                      {% if forloop.counter > 4 %}
+                      <div class="field">
+                        <div class="is-expanded">
+                          <div class="field has-addons">
+                              <div class="control has-icons-left has-icons-right is-expanded">
+                                {{ field }}
+                                <span class="icon is-small has-text-link is-left">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                              </div>
+                              <div class="control">
+                                <button onclick="togglePassword('{{ field.auto_id }}')" type="button" class="button is-link"><i class="fa fa-eye"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                          {% if field.help_text %}
+                          <p class="has-text-right has-text-link is-hidden-touch">
+                            <span class="has-text-left has-tooltip-arrow has-tooltip-right has-field-help" data-tooltip="{{field.help_text}}">
+                              <i class="fas fa-info-circle"></i>
+                            </span>
+                          </p>
+                          <p class="has-text-right has-text-link is-hidden-desktop">
+                            <span class="has-text-left has-tooltip-arrow has-tooltip-left has-field-help" data-tooltip="{{field.help_text}}">
+                              <i class="fas fa-info-circle"></i>
+                            </span>
+                          </p>
+                          {% endif %}
+                        </div>
+                      {% else %}
+                      {% if forloop.counter == 3 %}
+                      <div class="field is-horizontal">
+                        <div class="field-body">
+                          <div class="field">
+                            <p class="is-expanded control has-icons-left">
+                                {{ field }}
+                                <span class="icon is-small has-text-link is-left">
+                                    <i class="fas fa-address-card"></i>
+                                </span>
+                              </p>
+                          </div>
+                      {% elif forloop.counter == 4 %}
+                          <div class="field">
+                            <div class="is-expanded control has-icons-left">
+                              {{ field }}
+                              <span class="icon is-small has-text-link is-left">
+                                  <i class="fas fa-address-card"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% else %}
+                        <div class="field">
+                          <div class="control has-icons-left has-icons-left">
+                              {{ field }}
+                              <span class="icon is-small has-text-link is-left">
+                                  <i class="fas {% cycle 'fa-user' 'fa-envelope' %}"></i>
+                              </span>
+                          </div>
+                          {% if field.help_text %}
+                          <p class="has-text-right has-text-link is-hidden-touch">
+                            <span class="has-text-left has-tooltip-arrow has-tooltip-right has-field-help" data-tooltip="{{field.help_text}}">
+                              <i class="fas fa-info-circle"></i>
+                            </span>
+                          </p>
+                          <p class="has-text-right has-text-link is-hidden-desktop">
+                            <span class="has-text-left has-tooltip-arrow has-tooltip-left has-field-help" data-tooltip="{{field.help_text}}">
+                              <i class="fas fa-info-circle"></i>
+                            </span>
+                          </p>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      {% endif %}
+                      {% if forloop.counter != 3 %}
+                        {% if field.errors %}
+                        <p class="help is-danger text-center dark-mode-exception">
+                          {% for error in field.errors %}
+                            {{error}}
+                          {% endfor %}
+                        </p>
+                        {% endif %}
+                      <div class="space-xs"></div>
+                      {% endif %}
+                      {% endfor %}
+                    
+                      <div class="space-sm"></div>
+          
+                      <div class="control">
+                          <button type="submit" class="button is-link is-fullwidth is-uppercase">register</button>
+                      </div>
+                  </form>
+          
+                  <p class="has-text-centered" style="margin-top: 10px">
+                    Already have an account? Sign in 
+                      <a href="{% url 'account:login' %}">here</a>
+                    :)
+                  </p>
+                  <div class="custom-control custom-switch mb-3 text-center mt-3">
+                    <input type="checkbox" class="custom-control-input" id="dark_mode" onclick="switchDarkMode()">
+                    <label class="custom-control-label" for="dark_mode"><p>Toggle dark mode</p></label>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    let a = $(".has-field-help")
+    console.log(a[0])
+    for (let i = 0; i < a.length; i++) {
+     let temp = a[i].getAttribute('data-tooltip')
+     if (temp.includes('ul')) {
+       temp = replaceAll(temp, '<ul>', '')
+       temp = replaceAll(temp, '<li>', '')
+       temp = replaceAll(temp, '</ul>', '')
+       temp = replaceAll(temp, '</li>', '\n')
+       a[i].setAttribute('data-tooltip', temp)
+     }
+    }
+  })
+</script>
 {% endblock %}

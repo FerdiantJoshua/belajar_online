@@ -5,14 +5,14 @@
   <div class="hero-body">
       <div class="container">
           <div class="columns">
-              <div class="column box is-4 is-offset-4" style="padding: 15px 30px">
+              <div class="column box is-4-desktop is-offset-4-desktop is-6-tablet is-offset-3-tablet" style="padding: 15px 30px">
                   <h2 class="title has-text-centered">Login</h2>          
                   <form action="{% url 'account:login' %}" method="post" id="login_form">
                     {% csrf_token %}
                       <div class="field">
                           <div class="control has-icons-left has-icons-right">
                               {{ form.username }}
-                              <span class="icon is-small has-text-dark is-left">
+                              <span class="icon is-small has-text-success is-left">
                                   <i class="fas fa-envelope"></i>
                               </span>
                           </div>
@@ -23,12 +23,12 @@
                               <div class="field has-addons">
                                   <div class="control has-icons-left has-icons-right is-expanded">
                                       {{ form.password }}
-                                      <span class="icon is-small has-text-dark is-left">
+                                      <span class="icon is-small has-text-success is-left">
                                           <i class="fas fa-lock"></i>
                                       </span>
                                   </div>
                                   <div class="control">
-                                      <button onclick="togglePassword()" type="button" class="button is-dark"><i class="fa fa-eye"></i></button>
+                                      <button onclick="togglePassword('{{ form.password.auto_id }}')" type="button" class="button is-success"><i class="fa fa-eye"></i></button>
                                   </div>
                               </div>
                               {% if form.errors %}
@@ -45,7 +45,7 @@
                       <div class="space-sm"></div>
           
                       <div class="control">
-                          <button type="submit" class="button is-dark is-fullwidth is-uppercase">login</button>
+                          <button type="submit" class="button is-success is-fullwidth is-uppercase">login</button>
                       </div>
                   </form>
           
@@ -54,16 +54,13 @@
                       <a href="{% url 'account:register' %}">here</a>
                     :)
                   </p>
+                  <div class="custom-control custom-switch mb-3 text-center mt-3">
+                    <input type="checkbox" class="custom-control-input" id="dark_mode" onclick="switchDarkMode()">
+                    <label class="custom-control-label" for="dark_mode"><p>Toggle dark mode</p></label>
+                </div>
               </div>
           </div>
       </div>
   </div>
 </div>
-<script>
-  function togglePassword() {
-      const element = $("#id_password")
-      if (element.attr("type") == "password") element.attr("type", 'text')
-      else element.attr('type', 'password')
-  }
-</script>
 {% endblock %}

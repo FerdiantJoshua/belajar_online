@@ -1,7 +1,7 @@
 var dark_mode = false
 
 function checkDarkMode() {
-  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6'
+  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6, span'
   if (dark_mode) {
     $(css_classes).addClass('is-dark-mode')
   } else {
@@ -13,6 +13,20 @@ function checkDarkMode() {
 function switchDarkMode() {
   dark_mode = !dark_mode
   checkDarkMode()
+}
+
+function togglePassword(id) {
+  const element = $("#"+id)
+  if (element.attr("type") == "password") element.attr("type", 'text')
+  else element.attr('type', 'password')
+}
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
 $(document).ready(function() {

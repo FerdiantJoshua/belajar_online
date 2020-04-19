@@ -206,8 +206,14 @@ hr {
     color: #fff !important;
 }
 
-p.is-dark-mode:not(.dark-mode-exception), a.is-dark-mode, h1, h2, h3, h4, h5, h6, hr.is-dark-mode {
+p.is-dark-mode:not(.dark-mode-exception), a.is-dark-mode, 
+h1.is-dark-mode, h2.is-dark-mode, h3.is-dark-mode, h4.is-dark-mode, 
+h5.is-dark-mode, h6.is-dark-mode, hr.is-dark-mode {
     color: #fff !important;
+}
+
+span.is-dark-mode {
+    color: #000 !important;
 }
 
 a.is-dark-mode:hover {
