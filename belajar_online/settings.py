@@ -25,6 +25,21 @@ DB_PASSWORD = env('DB_PASSWORD')
 DB_HOST = env('DB_HOST')
 DB_PORT = env('DB_PORT')
 
+HIDE_NAV = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
+HIDE_FOOTER = [
+    'account:login',
+    'account:register'
+]
+HIDE_SCROLLBAR = [
+    'main:index',
+    'account:login',
+    'account:register'
+]
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -67,23 +82,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-HIDE_NAV = [
-    'main:index',
-    'account:login',
-    'account:register'
-]
-
-HIDE_FOOTER = [
-    'account:login',
-    'account:register'
-]
-
-HIDE_SCROLLBAR = [
-    'main:index',
-    'account:login',
-    'account:register'
 ]
 
 ROOT_URLCONF = 'belajar_online.urls'
