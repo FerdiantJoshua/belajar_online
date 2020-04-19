@@ -1,3 +1,5 @@
+from belajar_online import settings
+
 def set_fields_css_class(fields):
     for key in fields:
         placeholder = ' '.join(list(map(lambda x: x[0].upper() + x[1:], key.split('_'))))
@@ -13,3 +15,9 @@ def add_invalid_css_class_to_form(func):
             field.widget.attrs.update({'class': field.widget.attrs['class'] + ' is-invalid'})
         return func(*args, **kwargs)
     return wrapper
+
+
+def context_processors(request):
+    return { 
+        'is_dev_mode': settings.DEV_MODE
+    }

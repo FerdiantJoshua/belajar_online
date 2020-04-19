@@ -38,4 +38,27 @@ $(document).ready(function() {
         $(".hero").css('margin-top', '0');
       }
   });
+
+  $('#logout_link').click(function(e) {
+    e.preventDefault()
+    const url = $("#logout_link").attr('url')
+    console.log(url)
+    $.confirm({
+      title: 'Logout?',
+      content: 'Are you sure want to logout',
+      autoClose: 'logoutUser|10000',
+      theme: 'supervan',
+      buttons: {
+          logoutUser: {
+              text: 'Yes',
+              action: function() {
+                window.location.href = url
+              }
+          },
+          cancel: function () {
+              
+          }
+      }
+    });
+  })
 });

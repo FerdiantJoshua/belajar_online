@@ -2,14 +2,9 @@ from account.models import User
 from django.shortcuts import render
 from django.views import generic
 from belajar_online import settings
+from django.template import RequestContext
+from django.http import HttpResponse
 
-# class IndexView(generic.DetailView):
-#     template_name = 'main/index.html'
 
-def index(request):
-    return render(request, 'main/index.html', {
-        'user': request.user,
-        'nav': False,
-        'footer': True,
-        'dev_mode': settings.DEV_MODE
-    })
+class IndexView(generic.TemplateView):
+    template_name = 'main/index.html'

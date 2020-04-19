@@ -36,7 +36,7 @@
       <a href="{% url 'user_profile:profile' user.username %}" class="navbar-item is-tab is-size-5 has-text-dark">
         <i class="mr-3 fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}
       </a>
-      <a id="logout_link" title="logout" href="{% url 'account:logout' %}" class="icon has-text-danger is-size-6">
+      <a id="logout_link" title="logout" url="{% url 'account:logout' %}" class="icon has-text-danger is-size-6">
         <i class="fa fa-sign-out-alt"></i>
       </a>
       {% else %}
@@ -50,26 +50,3 @@
     </div>
   </div>
 </nav>
-<script>
-$('#logout_link').click(function(e) {
-  e.preventDefault()
-  const url = $("#logout_link").attr('url')
-  console.log(url)
-  $.confirm({
-    title: 'Logout?',
-    content: 'Are you sure want to logout',
-    autoClose: 'logoutUser|10000',
-    buttons: {
-        logoutUser: {
-            text: 'Yes',
-            action: function() {
-              window.location.href = url
-            }
-        },
-        cancel: function () {
-            
-        }
-    }
-  });
-})
-</script>
