@@ -1,6 +1,33 @@
+/* FONT */
+@font-face {
+    font-family: Ubuntu-Regular;
+    src: url('../vendor/Ubuntu-Regular.ttf'); 
+}
+@font-face {
+    font-family: Ubuntu-Bold;
+    src: url('../vendor/Ubuntu-Bold.ttf'); 
+}
+@font-face {
+  font-family: Montserrat-Regular;
+  src: url('../vendor/Montserrat-Regular.ttf'); 
+}
+@font-face {
+  font-family: Montserrat-Bold;
+  src: url('../vendor/Montserrat-Bold.ttf'); 
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: Ubuntu-Regular !important;
+    overflow-x: hidden;
+}
+
 html, body, main {
     margin: 0;
     height: 100%;
+    width: 100%;
 }
 
 .yellow {
@@ -9,4 +36,183 @@ html, body, main {
 
 .black {
     color: black;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Snackbar */
+/* The snackbar - position it at the bottom and in the middle of the screen */
+.snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+.snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+.fade-2 {
+    border-width: 0 0 2px;
+    color: skyblue;
+    border-image: linear-gradient(90deg, rgba(135, 206, 235, 0), skyblue 50%, rgba(135, 206, 235, 0) 100%) 0 0 100%;
+    border-style: solid;
+}
+
+hr {
+    border: 0;
+    margin: 1.35em auto;
+    max-width: 100%;
+    background-position: 50%;
+    box-sizing: border-box;
+}
+
+.space-xs {
+    height: 8px;
+    width: 100%;
+}
+.space-sm {
+    height: 16px;
+    width: 100%;
+}
+.space-md {
+    height: 24px;
+    width: 100%;
+}
+.space-lg {
+    height: 32px;
+    width: 100%;
+}
+.space-xl {
+    height: 40px;
+    width: 100%;
+}
+
+.justify-content-space-around {
+    justify-content: space-around;
+}
+.justify-content-space-between {
+    justify-content: space-between;
+}
+.justify-content-space-evenly {
+    justify-content: space-evenly;
+}
+.justify-content-center {
+    justify-content: center;
+}
+.justify-content-end {
+    justify-content: end;
+}
+.align-content-space-around {
+    align-content: space-around;
+}
+.align-content-space-between {
+    align-content: space-between;
+}
+.align-content-space-evenly {
+    align-content: space-evenly;
+}
+.align-content-center {
+    align-content: center;
+}
+.align-content-end {
+    align-content: end;
+}
+.align-items-center {
+    align-items: center;
+}
+.align-items-end {
+    align-items: end;
+}
+
+.navbar {
+    border-bottom: 1px solid black;
+}
+
+@media screen and (max-width: 1024px) {
+    .navbar {
+        display: initial;
+    }
+}
+
+.navbar-brand .navbar-item:hover {
+    background-color: initial !important;
+}
+
+.navbar.is-dark-mode {
+    background-color: #000 !important;
+    border-bottom: 1px solid white !important;
+}
+
+.navbar.is-dark-mode .navbar-start>a.navbar-item:hover {
+    background-color: transparent !important;
+    color: #eee !important;
+}
+
+.navbar.is-dark-mode img {
+    filter: brightness(0) invert(1) !important;
+}
+
+.hero {
+    transition: margin-top 0.1s linear;
+}
+
+.hero.is-dark-mode {
+    background-image: linear-gradient(141deg,#1f191a 0,#363636 71%,#46403f 100%) !important;
+    color: #fff !important;
+}
+
+.button.is-dark-mode {
+    background-color: transparent !important;
+    border-color: #fff !important;
+    color: #fff !important;
+}
+
+.button.is-dark-mode:hover {
+    background-color: #fff !important;
+    border-color: #363636 !important;
+    color: #000 !important;
+}
+
+.footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid black;
+}
+
+.footer.is-dark-mode {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+p.is-dark-mode {
+    color: #fff !important;
+}
+
+a.is-dark-mode {
+    color: #fff !important;
+}
+a.is-dark-mode:hover {
+    color: #aaa !important;
+}
+
+hr.is-dark-mode {
+    color: #fff !important;
+    border-image: none;
 }

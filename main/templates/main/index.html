@@ -1,14 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %} Tutor Online {% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container">
-  <div class="jumbotron">
-    <h1>Welcome to Tutor Online !</h1>
-    {% if user.is_authenticated %}
-        <h2>Hello {{ user.first_name }} {{ user.last_name }}</h2>
-    {% else %}
-        <h2>Register or Login if you'd like to</h2>
-    {% endif %}
+<style>
+  html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+</style>
+
+<div class="hero is-fullheight is-light">
+  <div class="hero-header text-center mt-5">
+    <p class="is-size-1-desktop is-size-2-tablet is-size-2-mobile animated fast fadeInUp">Welcome to Tutor Online !</p>
+  </div>
+  <div class="hero-body justify-content-center animated slow fadeInUp">
+    <div class="container text-center">
+      {% if user.is_authenticated %}
+          <p class="is-size-4-desktop is-size-5-tablet is-size-5-mobile">Hello, {{ user.first_name }} {{ user.last_name }}!</p> <br>
+          <button class="button is-link">Go to dashboard <i class="ml-5 fa fa-arrow-right"></i></button>
+      {% else %}
+      <div class="columns text-center">
+        <div class="column is-2"></div>
+        <a href="{% url 'account:register' %}" class="column is-2 is-size-4-desktop is-size-5-tablet is-size-5-mobile button is-link is-outlined">Register</a>
+        <div class="column is-1"></div>
+        <span class="column is-2 is-size-4-desktop is-size-5-tablet is-size-5-mobile">or</span>
+        <div class="column is-1"></div>
+        <a href="{% url 'account:login' %}" class="column is-2 is-size-4-desktop is-size-5-tablet is-size-5-mobile button is-success is-outlined">Login</a>
+        <div class="column is-2"></div>
+      </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}
