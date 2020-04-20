@@ -216,6 +216,38 @@ span.is-dark-mode {
     color: #000 !important;
 }
 
+input::-moz-placeholder {
+    color: #bbb !important;
+}
+
+input::-webkit-input-placeholder {
+    color: #bbb !important;
+}
+
+input:-ms-input-placeholder {
+    color: #bbb !important;
+}
+
+input:-moz-placeholder  {
+    color: #bbb !important;
+}
+
+input.is-dark-mode::-moz-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode::-webkit-input-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode:-ms-input-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode:-moz-placeholder  {
+    color: #666 !important;
+}
+
 a.is-dark-mode:hover {
     color: #aaa !important;
 }

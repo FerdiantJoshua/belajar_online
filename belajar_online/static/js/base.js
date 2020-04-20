@@ -1,7 +1,7 @@
 var dark_mode = false
 
 function checkDarkMode() {
-  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6, span'
+  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6, span, input'
   if (dark_mode) {
     $(css_classes).addClass('is-dark-mode')
   } else {
