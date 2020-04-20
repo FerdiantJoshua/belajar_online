@@ -196,7 +196,7 @@ hr {
     border-top: 1px solid black;
 }
 
-.footer.is-dark-mode {
+.footer.is-dark-mode, .card.is-dark-mode, .card .card-content.is-dark-mode {
     background-color: #000 !important;
     color: #fff !important;
 }
@@ -210,10 +210,67 @@ p.is-dark-mode:not(.dark-mode-exception), a.is-dark-mode, h1, h2, h3, h4, h5, h6
     color: #fff !important;
 }
 
+span.is-dark-mode {
+    color: #fff !important;
+}
+
+span.is-reverse.is-dark-mode {
+    color: #000 !important;
+}
+
+input::-moz-placeholder {
+    color: #bbb !important;
+}
+
+input::-webkit-input-placeholder {
+    color: #bbb !important;
+}
+
+input:-ms-input-placeholder {
+    color: #bbb !important;
+}
+
+input:-moz-placeholder  {
+    color: #bbb !important;
+}
+
+input.is-dark-mode::-moz-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode::-webkit-input-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode:-ms-input-placeholder {
+    color: #666 !important;
+}
+
+input.is-dark-mode:-moz-placeholder  {
+    color: #666 !important;
+}
+
 a.is-dark-mode:hover {
     color: #aaa !important;
 }
 
 hr.is-dark-mode {
     border-image: none;
+}
+
+.fade-box {
+    position: relative;
+}
+  
+.fade-box .bottom-container {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 130px;
+    background-image: linear-gradient(to bottom, transparent, white);
+}
+
+.card.is-dark-mode .fade-box .bottom-container {
+    background-image: linear-gradient(to bottom, transparent, black);
 }

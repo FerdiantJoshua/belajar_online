@@ -1,41 +1,70 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} Portfolio {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/learning/learning.css' %}">
+{% endblock %}
 {% block content %}
-<section class="container mt-4 mb-4">
-  <div class="container">
-    <h1>Our Teachers</h1>
-    <div class="row">
-      {% for teacher in teachers %}
-      <div class="col-md-6 mb-3">
-        <div class="d-flex flex-row border rounded">
-
-          <div class="p-0 w-25">
-            {% if teacher.userdetail.photos %}
-            <img src="{% get_media_prefix %}{{ teacher.userdetail.photos }}" class="border-0 img-thumbnail"
-                 alt="avatar">
-            {% else %}
-            <img src="{% static 'images/blank_profile.png' %}" class="border-0 img-thumbnail" alt="avatar">
-            {% endif %}
+<div class="hero is-fullheight-with-navbar is-light is-bold">
+  <div class="space-lg"></div>
+  <p class="title has-text-centered is-uppercase">Our Teachers</p>
+  <hr>
+  <div class="hero-body justify-content-center">
+    <div class="columns is-multiline" style="width: 100%">
+    {% for teacher in teachers %}
+        <div class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
+          <div class="card song-card-container">
+            <a class="has-text-dark" href="{% url 'user_profile:profile' teacher.username %}">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  {% if teacher.userdetail.photos %}
+                  <img src="{% get_media_prefix %}{{ teacher.userdetail.photos }}" class="border-0 img-thumbnail"
+                      alt="avatar">
+                  {% else %}
+                  <img src="{% static 'images/blank_profile.png' %}" class="border-0 img-thumbnail" alt="avatar">
+                  {% endif %}
+                </figure>
+              </div>
+              <header class="card-header">
+                <p class="card-header-title is-size-4" style="justify-content: center">
+                  {% if teacher.first_name or teacher.last_name %}
+                  {{ teacher.first_name }} {{ teacher.last_name }}
+                  {% else %}
+                  (no name)
+                  {% endif %}
+                </p>
+              </header>
+              <div class="card-content fade-box song-card message is-dark">
+                  <div class="message-body" style="height: 200px; overflow-y: hidden">
+                    {% autoescape off %}
+                    {{ teacher.userdetail.about }}
+                    {% endautoescape %}
+                  </div>
+                  <div class="bottom-container"></div>
+              </div>
+              <footer class="card-footer">
+                {% if teacher.email %}
+                <a href="mailto:{{ teacher.email }}" class="card-footer-item">
+                  <i class="fa fa-envelope mr-2"></i>Email
+                </a>
+                {% endif %}
+                <a href="#" class="card-footer-item">
+                  <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                </a>
+                <a href="#" class="card-footer-item">
+                  <i class="fab fa-twitter-square mr-2"></i> Twitter
+                </a>
+              </footer>
+            </a>
           </div>
-          <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
-            <h4 class="text-primary">{{ teacher.first_name }} {{ teacher.last_name }}</h4>
-            <h5 class="text-info">Professional Teacher</h5>
-            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0">
-              <li><i class="fab fa-linkedin"></i> LinkedIn</li>
-              <li><i class="fab fa-twitter-square"></i> Twitter</li>
-            </ul>
-            <p class="text-right m-0"><a href="{% url 'user_profile:profile' teacher.username %}" class="btn btn-primary"><i class="far fa-user"></i> View Profile</a>
-            </p>
-
-          </div>
-        </div>
       </div>
       {% empty %}
-        <p>No teachers so far :(</p>
+      <div class="container">
+        <h1 class="title has-text-centered">No teachers found</h1>
+      </div>
       {% endfor %}
     </div>
-
   </div>
-</section>
+</div>
+
 {% endblock %}

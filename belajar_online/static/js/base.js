@@ -1,7 +1,7 @@
 var dark_mode = false
 
 function checkDarkMode() {
-  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6'
+  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6, span, input, .card, .card-content'
   if (dark_mode) {
     $(css_classes).addClass('is-dark-mode')
   } else {
@@ -17,6 +17,9 @@ function switchDarkMode() {
 
 $(document).ready(function() {
   // Check for click events on the navbar burger icon
+
+  $('body.has-navbar-fixed-top').css('padding-top', $('.navbar').outerHeight()+'px')
+
   $(".navbar-burger").click(function() {
       // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
       $(".navbar-burger").toggleClass("is-active");
