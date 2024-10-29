@@ -201,19 +201,18 @@ hr {
     color: #fff !important;
 }
 
-.box.is-dark-mode {
-    background-color: #111 !important;
+p.is-dark-mode {
     color: #fff !important;
 }
 
-p.is-dark-mode:not(.dark-mode-exception), a.is-dark-mode, h1, h2, h3, h4, h5, h6, hr.is-dark-mode {
+a.is-dark-mode {
     color: #fff !important;
 }
-
 a.is-dark-mode:hover {
     color: #aaa !important;
 }
 
 hr.is-dark-mode {
+    color: #fff !important;
     border-image: none;
 }

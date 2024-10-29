@@ -1,11 +1,22 @@
 var dark_mode = false
 
 function checkDarkMode() {
-  const css_classes = '.hero, .button, .footer, .navbar, .box, p, a, hr, h1, h2, h3, h4, h5, h6'
   if (dark_mode) {
-    $(css_classes).addClass('is-dark-mode')
+    $(".hero").addClass('is-dark-mode')
+    $(".button").addClass('is-dark-mode')
+    $(".footer").addClass('is-dark-mode')
+    $(".navbar").addClass('is-dark-mode')
+    $("p").addClass('is-dark-mode')
+    $("a").addClass('is-dark-mode')
+    $("hr").addClass('is-dark-mode')
   } else {
-    $(css_classes).removeClass('is-dark-mode')
+    $(".hero").removeClass('is-dark-mode')
+    $(".button").removeClass('is-dark-mode')
+    $(".footer").removeClass('is-dark-mode')
+    $(".navbar").removeClass('is-dark-mode')
+    $("p").removeClass('is-dark-mode')
+    $("a").removeClass('is-dark-mode')
+    $("hr").removeClass('is-dark-mode')
 
   }
 }
