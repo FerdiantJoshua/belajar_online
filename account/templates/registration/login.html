@@ -1,21 +1,63 @@
 {% extends 'base.html' %}
+{% load base_extras %}
 {% block title %} Login {% endblock %}
 {% block content %}
-<div class="container">
-  <h1>Login</h1>
-  <form method="post" action="{% url 'account:login' %}">
-    {% csrf_token %}
-    <div class="form-group">
-      {{ form.username }}
-    </div>
-    <div class="form-group">
-      {{ form.password }}
-      {% if form.errors %}
-      <div class="invalid-feedback">{{ form.non_field_errors }}</div>
-      {% endif %}
-    </div>
-    <p>Don't have an account? Create one <a href="{% url 'account:register' %}">here</a></p>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
+<div class="hero is-fullheight is-light">
+  <div class="hero-body">
+      <div class="container">
+          <div class="columns">
+              <div class="column box is-4 is-offset-4" style="padding: 15px 30px">
+                  <h2 class="title has-text-centered">Login</h2>
+                  <form action="{% url 'account:login' %}" method="post" id="login_form">
+                    {% csrf_token %}
+                      <div class="field">
+                          <div class="control has-icons-left has-icons-right">
+                              {{ form.username|add_placeholder|set_class:'input' }}
+                              <span class="icon is-small has-text-dark is-left">
+                                  <i class="fas fa-envelope"></i>
+                              </span>
+                          </div>
+                      </div>
+                      <div class="space-sm"></div>
+                      <div class="field-body">
+                          <div class="field is-expanded">
+                              <div class="field has-addons">
+                                  <div class="control has-icons-left has-icons-right is-expanded">
+                                      {{ form.password|add_placeholder|set_class:'input' }}
+                                      <span class="icon is-small has-text-dark is-left">
+                                          <i class="fas fa-lock"></i>
+                                      </span>
+                                  </div>
+                                  <div class="control">
+                                      <button onclick="togglePassword()" type="button" class="button is-dark"><i class="fa fa-eye"></i></button>
+                                  </div>
+                              </div>
+                              {% if form.errors %}
+                              <p class="help is-danger text-center dark-mode-exception" id="password_not_valid">
+                                {% for error in form.non_field_errors %}
+                                    {{error}}
+                                {% endfor %}
+                              </p>
+                              {% endif %}
+                          </div>
+                      </div>
+
+
+                      <div class="space-sm"></div>
+
+                      <div class="control">
+                          <button type="submit" class="button is-dark is-fullwidth is-uppercase">login</button>
+                      </div>
+                  </form>
+
+                  <p class="has-text-centered" style="margin-top: 10px">
+                    Don't have an account? Create one
+                      <a href="{% url 'account:register' %}">here</a>
+                    :)
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock %}
