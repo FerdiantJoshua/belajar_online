@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load base_extras %}
 {% block title %} Register {% endblock %}
 {% block content %}
 <div class="container">
@@ -8,12 +7,12 @@
     {% csrf_token %}
     {% for field in form %}
     <div class="form-group">
-      {{ field|add_placeholder|set_class:'input' }}
+      {{ field }}
       {% if field.errors %}
       <div class="invalid-feedback">{{ field.errors }}</div>
       {% endif %}
       {% if field.help_text %}
-      <small class="form-text text-muted">{{ field.help_text }}</small>
+      <small class="form-text text-muted">{{field.help_text}}</small>
       {% endif %}
     </div>
     {% endfor %}
